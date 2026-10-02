@@ -23,3 +23,6 @@ next-env.d.ts
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# generated locally by `npm run lighthouse` (see README) - ~14 MB per run
+/lighthouse-reports

@@ -72,6 +72,7 @@ npm run dev         # http://localhost:3000
 | `npm run assets` | Regenerate logo, icon and product artwork |
 | `npm run audit` | Full end-to-end audit against a running server |
 | `npm run audit:build` | Build, then audit |
+| `npm run lighthouse` | Lighthouse across 5 routes × mobile and desktop |
 
 ### Running the audit
 
@@ -92,6 +93,33 @@ The audit visits every route, then checks:
 - Broken internal links (crawled from seed pages)
 - The mobile menu opens, closes on `Escape`, and that the first `Tab` stop has a visible focus ring
 - Screenshots 11 pages at 1440px, 1024px and 390px into `screenshots/`
+
+### Running Lighthouse
+
+The audit above checks structure; Lighthouse measures the rendered result.
+
+```bash
+npm run build
+npm start                  # port 3000
+npm run lighthouse         # in another terminal
+```
+
+This runs Lighthouse (mobile and desktop) against `/`, `/products`, `/categories/watches`,
+`/products/dwc-terra-field-watch` and a guide, and writes JSON + HTML reports per route to
+`lighthouse-reports/`, plus a `SUMMARY.md`. Point it elsewhere with
+`LH_BASE_URL=https://your-deployment npm run lighthouse`.
+
+Those reports are ~14 MB per run, so `lighthouse-reports/` is git-ignored; the numbers below
+are the committed record.
+
+> **WSL note.** `chrome-launcher` detects WSL and builds its Chrome profile path from the
+> Windows `AppData` location. On Linux the backslashes are not path separators, so it used to
+> leave a junk directory named `C:\Users\...` in the working directory on every run. The
+> script now runs Lighthouse from a scratch folder under `$TMPDIR` and deletes it afterwards,
+> which keeps those out of the repository.
+
+Lighthouse needs Chrome. If none is on `PATH` the script falls back to the browser that
+Playwright installed (`~/.cache/ms-playwright`), and `CHROME_PATH` overrides both.
 
 ### Environment
 
@@ -257,6 +285,20 @@ Each cluster has: a hub (category), an informational page (guide), a commercial-
   render on demand.
 - `next/image` is configured for AVIF/WebP output with an explicit `deviceSizes` set.
 - Shared first-load JavaScript is ~103 kB; the only client bundles are the menu and two forms.
+- Metadata is served in `<head>` for every request. See the note below — Next 15 streams
+  metadata into `<body>` for on-demand routes, which hides it from any consumer that does not
+  run JavaScript.
+
+### Streaming metadata
+
+Next 15 resolves metadata for dynamically rendered routes *after* it has already flushed the
+shell, so `<meta name="description">` is appended to the end of `<body>` and only hoisted into
+`<head>` by client-side React. The built-in allowlist covers Google, Bing, Twitter and Slack
+crawlers only, which means AI crawlers, link previewers and social scrapers saw a page with no
+meta description at all — and Lighthouse's SEO audit scored those routes 92 for the same
+reason. `next.config.mjs` therefore sets `htmlLimitedBots: /.*/`, which forces blocking
+metadata for everyone and puts the tags in `<head>` in the delivered HTML. Verified with
+`curl`: the description now precedes `</head>` on all routes.
 
 ---
 
@@ -280,6 +322,51 @@ Viewports tested: **1440×900**, **1024×768**, **768×1024** (tablet breakpoint
 
 Screenshots are committed under `screenshots/` as
 `<page>-<width>.png` (for example `home-1440.png`, `product-detail-390.png`).
+
+### Lighthouse
+
+Run with the factory mobile preset (4× CPU, 1.6 Mbps) and the desktop preset against
+`next start`, over three consecutive passes.
+
+| Route | Mobile perf | Desktop perf | A11y | Best practices | SEO |
+| --- | --- | --- | --- | --- | --- |
+| `/` | 88–93 | 100 | 100 | 100 | 100 |
+| `/products` | 85–93 | 100 | 100 | 100 | 100 |
+| `/categories/watches` | 88–90 | 100 | 100 | 100 | 100 |
+| `/products/dwc-terra-field-watch` | 88–98 | 100 | 100 | 100 | 100 |
+| `/guides/building-a-calm-desk-setup` | 87–97 | 100 | 100 | 100 | 100 |
+
+**Accessibility, best practices and SEO scored 100 on all thirty runs** after the two fixes
+below, and desktop performance scored 100 on all fifteen. Mobile performance is genuinely
+noisy on a shared, CPU-throttled host — the same route moved 10 points between passes with no
+code change, so read the ranges, not the midpoints. Layout shift is `0` everywhere and desktop
+LCP is 0.5–0.8 s.
+
+What mobile performance is actually spending time on, from the trace:
+
+- **Style & Layout (~1.3 s)** dominates, not scripting. Tailwind's utility CSS is the cost of
+  the design system, not a fixable one-liner — and the DOM is not the problem: Lighthouse
+  measured **441 elements** on `/` and **347** on `/products`, both under the 800-element
+  threshold it warns at.
+- **Render-blocking CSS** — one 7 kB stylesheet, `wastedMs` ~177 — and **legacy JS** (11.7 kB of
+  polyfills in Next's shared chunk) are both emitted by the framework and would need
+  `browserslist`/critical-CSS work to remove. Not worth it here.
+- **Weight overall is small**: 11 JS requests totalling ~119 kB over the wire, a page total of
+  **166–174 KiB**, and only ~30 ms of scripting attributed to the main document.
+
+Two findings were fixed rather than documented:
+
+1. **Meta description in `<body>`** — see "Streaming metadata" above. This was a genuine
+   defect for non-JS consumers and cost 8 SEO points on the two on-demand routes.
+2. **WCAG 2.5.3 label in name.** The product-card image link carried an `aria-label`, and the
+   "Staff pick" badge sat inside that link. An explicit `aria-label` overrides descendant
+   text, so the visible label was missing from the accessible name. The badge now sits
+   outside the anchor with `pointer-events-none`, so the link contains only the image.
+
+The only remaining failed audit is `bf-cache` on `/products` and `/categories/watches`,
+which Lighthouse itself labels "Not actionable": Next sends `Cache-Control: no-store` for
+on-demand routes, which bars them from the back/forward cache. The audit has a **weight of 0**
+in the performance category, so it does not move the score.
 
 ---
 
@@ -367,9 +454,9 @@ status code honest. Detail routes that do not read `searchParams` additionally s
   it is deliberately `noindex`.
 - **No automated a11y test suite.** The audit checks focus visibility, landmarks, labels and
   alt coverage, but axe-core or manual screen-reader testing is not included.
-- **No Lighthouse/CWV run is committed.** The measures in this repo (no third-party requests,
-  system fonts, fixed image aspect ratios, static generation, ~103 kB shared JS) are
-  structural, and a Lighthouse run should be performed against the deployed URL.
+- **Lighthouse was run locally, not against a deployment.** Results below come from a headless
+  Chrome 153 against `next start` on one machine, so treat them as indicative rather than
+  authoritative. Re-run against the real origin before quoting them anywhere.
 - **`NEXT_PUBLIC_SITE_URL` defaults to `https://marlowe.supply`** so the build is
   deterministic. Set it to your real origin before deploying, or canonical URLs and the
   sitemap will point at the placeholder.

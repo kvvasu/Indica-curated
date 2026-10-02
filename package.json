@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "assets": "node scripts/generate-assets.mjs",
     "audit": "node scripts/audit.mjs",
-    "audit:build": "next build && node scripts/audit.mjs"
+    "audit:build": "next build && node scripts/audit.mjs",
+    "lighthouse": "node scripts/lighthouse.mjs"
   },
   "dependencies": {
     "next": "^15.5.27",
@@ -24,6 +25,7 @@
     "@types/react-dom": "^19.1.2",
     "eslint": "^9.26.0",
     "eslint-config-next": "^15.5.27",
+    "lighthouse": "^12.8.2",
     "playwright": "^1.63.0",
     "tailwindcss": "^4.1.13",
     "typescript": "^5.8.3"

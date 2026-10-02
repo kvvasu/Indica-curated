@@ -7,12 +7,12 @@ import { formatPrice } from "@/lib/utils";
 export function ProductCard({ product, priority = false }: { product: Product; priority?: boolean }) {
   return (
     <article className="card group flex h-full flex-col">
-      <Link
-        href={`/products/${product.slug}`}
-        className="block focus-visible:outline-offset-0"
-        aria-label={`${product.name} by ${brandName(product.brand)}`}
-      >
-        <div className="relative aspect-[4/3] overflow-hidden border-b border-[var(--color-line)] bg-[var(--color-paper)]">
+      <div className="relative aspect-[4/3] overflow-hidden border-b border-[var(--color-line)] bg-[var(--color-paper)]">
+        <Link
+          href={`/products/${product.slug}`}
+          className="block h-full focus-visible:outline-offset-0"
+          aria-label={`${product.name} by ${brandName(product.brand)}`}
+        >
           <Image
             src={`/media/products/${product.art}.svg`}
             alt={`${product.name} — abstract illustration`}
@@ -21,13 +21,16 @@ export function ProductCard({ product, priority = false }: { product: Product; p
             priority={priority}
             className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
           />
-          {product.staffPick && (
-            <span className="absolute left-3 top-3 bg-[var(--color-ink)] px-2 py-1 text-[10px] uppercase tracking-[0.14em] text-[var(--color-paper)]">
-              Staff pick
-            </span>
-          )}
-        </div>
-      </Link>
+        </Link>
+        {/* Outside the link on purpose: an explicit aria-label overrides
+            descendant text, so a visible badge inside the anchor would break
+            WCAG 2.5.3 (label in name). */}
+        {product.staffPick && (
+          <span className="pointer-events-none absolute left-3 top-3 z-10 bg-[var(--color-ink)] px-2 py-1 text-[10px] uppercase tracking-[0.14em] text-[var(--color-paper)]">
+            Staff pick
+          </span>
+        )}
+      </div>
 
       <div className="flex flex-1 flex-col gap-1 p-4">
         <p className="text-[11px] uppercase tracking-[0.14em] text-[var(--color-muted)]">
