@@ -155,7 +155,7 @@ export function productLd(product: Product) {
       "@type": "Offer",
       price: product.price,
       priceCurrency: product.currency,
-      availability: "https://schema.org/InStock",
+      availability: `https://schema.org/${product.availability ?? "InStock"}`,
       url: absoluteUrl(`/products/${product.slug}`),
     },
     additionalProperty: product.specs.map((s) => ({

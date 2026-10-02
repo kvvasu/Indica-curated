@@ -65,7 +65,9 @@ export default async function ProductPage({ params }: { params: Params }) {
       q: `Is the ${product.name} repairable?`,
       a: product.tags.includes("repairable") || product.tags.includes("standard-parts")
         ? `Yes. ${brandName(product.brand)} supplies spare parts for this product, and the listing above names the parts that are replaceable.`
-        : `Partially. ${brandName(product.brand)} supports the consumable parts listed in the specifications, but the core assembly is not designed to be opened.`,
+        : product.tags.includes("serviceable-movement")
+          ? `The case is not user-serviceable, but the movement is mechanical and can be serviced by a watchmaker rather than replaced as a sealed module. Confirm the current warranty terms with ${brandName(product.brand)} before buying.`
+          : `Partially. ${brandName(product.brand)} supports the consumable parts listed in the specifications, but the core assembly is not designed to be opened.`,
     },
     {
       q: `What warranty does the ${product.name} carry?`,
@@ -126,7 +128,9 @@ export default async function ProductPage({ params }: { params: Params }) {
                   ? "This piece is washable, which is rare for its category and is the main reason it ages well. Follow the care note in the specifications rather than improvising."
                   : product.tags.includes("repairable")
                     ? "Wear parts are named in the specifications and sold by the brand, so the object can be kept in service rather than replaced."
-                    : "Store it dry and handle it as a tool rather than a display piece; the specifications list the material that will show wear first."}
+                    : product.tags.includes("serviceable-movement")
+                      ? "Keep the case away from solvents, rinse it with fresh water if it meets salt or sweat, and have the movement serviced every five to seven years. A mechanical caliber is a service item, not a consumable."
+                      : "Store it dry and handle it as a tool rather than a display piece; the specifications list the material that will show wear first."}
               </p>
               <h2>What to check before buying</h2>
               <ul>
@@ -172,6 +176,16 @@ export default async function ProductPage({ params }: { params: Params }) {
                   <dt className="text-[var(--color-muted)]">Staff pick</dt>
                   <dd>{product.staffPick ? "Yes" : "No"}</dd>
                 </div>
+                {product.availability && product.availability !== "InStock" && (
+                  <div className="flex justify-between gap-4">
+                    <dt className="text-[var(--color-muted)]">Availability</dt>
+                    <dd className="text-right">
+                      {product.availability === "PreOrder"
+                        ? "Pre-order"
+                        : "Batch release — check before ordering"}
+                    </dd>
+                  </div>
+                )}
               </dl>
             </div>
 

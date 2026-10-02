@@ -200,6 +200,30 @@ export const categories: Category[] = [
         a: "We describe what a product is and what it contains, and avoid medical claims entirely.",
       },
     ],
+  },  {
+    slug: "watches",
+    name: "Watches",
+    short: "Field watches you can have serviced, not sealed.",
+    description:
+      "Mechanical field watches chosen for readable dials, honest case dimensions and movements a watchmaker can service.",
+    intro: [
+      "A watch is one of the few objects here that is built to be opened. A mechanical movement is serviced rather than discarded, so case material, case height, water resistance and the movement itself matter more than the dial finish.",
+      "We list the case dimensions, the caliber, the water resistance and the stated warranty for every entry, and we say plainly when a release is sold in batches rather than kept in stock.",
+    ],
+    faqs: [
+      {
+        q: "Why only mechanical field watches?",
+        a: "A mechanical movement can be serviced by any competent watchmaker, so the watch stays useful for decades. Sealed modules cannot be repaired in the same way and are not listed.",
+      },
+      {
+        q: "How much water resistance is enough for a field watch?",
+        a: "50 metres covers rain, hand washing and accidental splashes. It is not a rating for swimming or diving, and the seal should be checked whenever the case is opened.",
+      },
+      {
+        q: "Why do you quote case height instead of only diameter?",
+        a: "Case height, not diameter, usually decides whether a watch slides under a cuff. Under roughly 10mm is comfortable for most wrists.",
+      },
+    ],
   },
 ];
 

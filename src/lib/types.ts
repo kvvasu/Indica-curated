@@ -4,12 +4,15 @@ export type Product = {
   brand: string; // brand slug
   category: string; // category slug
   price: number; // in whole currency units
-  currency: "USD";
+  /** Reference currency for the price field. */
+  currency: "USD" | "INR";
   tagline: string;
   description: string;
   specs: { label: string; value: string }[];
   tags: string[];
   staffPick?: boolean;
+  /** Inventory signal used for schema.org availability; must match the visible page. */
+  availability?: "InStock" | "LimitedAvailability" | "PreOrder";
   /** Lower number = higher placement in the featured ordering. */
   featuredRank: number;
   updated: string; // ISO date

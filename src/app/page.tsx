@@ -128,7 +128,7 @@ export default function HomePage() {
             <div>
               <p className="eyebrow mb-2">Browse</p>
               <h2 id="categories-heading" className="text-3xl md:text-4xl">
-                Eight categories, deliberately narrow
+                {categories.length} categories, deliberately narrow
               </h2>
             </div>
             <Link href="/categories" className="link-underline text-sm">

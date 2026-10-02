@@ -17,12 +17,20 @@ asset are original to this repository.
 | Item | Status |
 | --- | --- |
 | Brand name, wordmark, monogram | Original ("Marlowe" / Marlowe Supply Co.) |
-| Products, prices, specifications | Fictional, written for this project |
+| Products, prices, specifications | Fictional, except the DWC Terra (see note below) |
 | Brands (Norr, Halden, Kioku, …) | Fictional makers invented for this project |
 | Editorial copy, guides, FAQs | Original writing |
 | Product artwork | Generated from deterministic geometry by `scripts/generate-assets.mjs` |
 | Photographs, logos, brand imagery | **None used.** No asset is copied or hotlinked from any third party |
 | Fonts | System font stacks only — no third-party font requests |
+
+**One real brand.** `Delhi Watch Company` (DWC) and its `DWC Terra` field watch are real
+products. The Terra is listed with specifications taken from the brand's own public product
+page on 2 October 2026, priced in Indian rupees, and marked as a batch release because
+pre-orders for that run had closed. Nothing about DWC is invented, but its price, warranty
+wording and availability changed between visits to the page, so verify them before buying.
+Every other maker on this site, every other product, and all warranty or repair language
+attached to those fictional makers is written for this project.
 
 The reference site's *layout ideas* (a chip filter row, a product grid with
 brand · category · price, a curated-lists section, a newsletter hero, an affiliate-disclosure
@@ -108,6 +116,7 @@ All requested routes are present, plus loading / empty / error / 404 states.
 | `/products/[slug]` | SSG | Product detail, specs, FAQ, alternatives, JSON-LD `Product` |
 | `/categories` | Static | Category index with entry counts |
 | `/categories/[slug]` | Hybrid | Intro, filters/sort/pagination, related guides, category FAQ |
+| `/products/dwc-terra-field-watch` | SSG | Real product (DWC Terra), priced in INR, batch-release availability |
 | `/brands` | Static | Maker index with stated repair commitments |
 | `/brands/[slug]` | Hybrid | Maker story, repair commitment, scoped catalogue |
 | `/lists` | Static | Curated collection index |
@@ -144,7 +153,7 @@ duplicate pages. There are no doorway pages and no keyword-stuffed landing pages
 - **Descriptive, hyphenated URLs** (`/products/halo-task-light`, `/guides/how-to-choose-a-task-lamp`).
 - **Open Graph and Twitter** tags on every page, each with a generated 1200×630 image from
   `/api/og`, so no binary social assets need to be shipped.
-- **`sitemap.xml`** with per-page `lastModified` (75 URLs), and **`robots.txt`** that
+- **`sitemap.xml`** with per-page `lastModified` (78 URLs), and **`robots.txt`** that
   advertises the sitemap and blocks `/api/` and `/search`.
 - **Breadcrumbs** on every detail and section page — rendered visibly *and* emitted as
   `BreadcrumbList`.
@@ -256,12 +265,12 @@ Each cluster has: a hub (category), an informational page (guide), a commercial-
 Measured against the production build with `scripts/audit.mjs`:
 
 ```
-Routes audited:        27
+Routes audited:        30
 Hard failures:         0
 Console/net notes:     0
-Internal links:        57 checked, 0 broken
-Prerendered pages:     85
-Screenshots:           33 (11 pages × 1440 / 1024 / 390)
+Internal links:        58 checked, 0 broken
+Prerendered pages:     88
+Screenshots:           36 (12 pages × 1440 / 1024 / 390)
 Mobile menu:           opens (aria-expanded=true), closes on Escape
 Focus indicator:       solid 2px outline on first Tab stop
 ```

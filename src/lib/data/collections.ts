@@ -68,14 +68,20 @@ export const collections: Collection[] = [
   {
     slug: "pack-light",
     title: "Pack Light",
-    subtitle: "Four carry pieces for one and a half bags",
+    subtitle: "Five pieces for one and a half bags, including a field watch",
     description:
       "A carry-on-only setup built around repairable hardware and a tote that doubles as a day bag.",
     intro: [
-      "This is the kit we actually travel with: one duffel, one tote, one sleeve. Everything is repairable and nothing needs a special case.",
+      "This is the kit we actually travel with: one duffel, one tote, one sleeve and a field watch. Everything is repairable and nothing needs a special case.",
       "The tote clips flat into the duffel for the flight and comes out as the day bag at the other end.",
     ],
-    productSlugs: ["weekender-duffel", "field-tote", "card-sleeve", "blackout-sleep-mask"],
+    productSlugs: [
+      "weekender-duffel",
+      "field-tote",
+      "card-sleeve",
+      "blackout-sleep-mask",
+      "dwc-terra-field-watch",
+    ],
     curator: "Vasu Yadav",
     updated: "2026-08-24",
   },

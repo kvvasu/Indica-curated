@@ -627,6 +627,31 @@ export const products: Product[] = [
     featuredRank: 37,
     updated: "2026-03-28",
     art: 29,
+  },  {
+    slug: "dwc-terra-field-watch",
+    name: "DWC Terra",
+    brand: "delhi-watch-company",
+    category: "watches",
+    price: 4499,
+    currency: "INR",
+    tagline: "A carabiner-inspired field watch with a mechanical caliber.",
+    description:
+      "The Terra is Delhi Watch Company's fifth-anniversary field watch, designed around the carabiner that inspired it. The 32 x 44mm 316L stainless steel case is 8.3mm tall, which keeps it wearable under a cuff, and the GL32 caliber is a mechanical movement a watchmaker can service rather than a sealed module. It is released in batch drops: the pre-order window for this run closed at the time of our last review, and the brand states that the next sale follows only after earlier orders have shipped.",
+    specs: [
+      { label: "Case", value: "316L stainless steel, 32 x 44mm" },
+      { label: "Case height", value: "8.3mm" },
+      { label: "Glass and caseback", value: "SCHOTT glass, 316L SS caseback" },
+      { label: "Caliber", value: "GL32, mechanical" },
+      { label: "Water resistance", value: "50 metres" },
+      { label: "Lume", value: "Vintage Japanese lume" },
+      { label: "Strap", value: "Parachute strap, black" },
+      { label: "Warranty", value: "Stated by the brand on the movement; confirm current terms at purchase" },
+    ],
+    tags: ["serviceable-movement", "field-watch", "batch-release"],
+    availability: "LimitedAvailability",
+    featuredRank: 7,
+    updated: "2026-10-02",
+    art: 30,
   },
 ];
 

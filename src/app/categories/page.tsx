@@ -9,7 +9,7 @@ import { buildMetadata, collectionPageLd } from "@/lib/seo";
 export const metadata: Metadata = buildMetadata({
   title: "Categories — Browse Objects by Use",
   description:
-    "Eight deliberately narrow categories: audio, workspace, kitchen, lighting, carry, textiles, paper and wellness. Each category page explains what we look for and why.",
+    "Deliberately narrow categories — audio, workspace, kitchen, lighting, watches, carry, textiles, paper and wellness — each explaining what we look for and why.",
   path: "/categories",
   keywords: ["product categories", "homeware categories", "kitchen lighting carry"],
 });

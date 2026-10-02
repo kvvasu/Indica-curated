@@ -180,6 +180,20 @@ export const brands: Brand[] = [
     ],
     ethos:
       "Full ingredient disclosure, refill pouches as standard, and no unsubstantiated health claims.",
+  },  {
+    slug: "delhi-watch-company",
+    name: "Delhi Watch Company",
+    origin: "New Delhi, India",
+    founded: "2021",
+    focus: "Watches",
+    description:
+      "A Delhi-based microbrand making affordable field watches, released in limited batch drops and sold direct to customers.",
+    story: [
+      "Delhi Watch Company designs and releases field watches in scheduled drops rather than keeping continuous stock, selling directly to customers in India and shipping internationally.",
+      "The studio marked its fifth year with the Terra, a carabiner-inspired field watch sold through a time-limited pre-order window. Availability is intermittent by design, so the listing here notes when a release is between drops.",
+    ],
+    ethos:
+      "Batch drops with a stated movement warranty, and a case designed around a serviceable mechanical caliber rather than a sealed module. Warranty wording has differed between the brand's listing and the checkout terms, so confirm it at the point of purchase.",
   },
 ];
 
