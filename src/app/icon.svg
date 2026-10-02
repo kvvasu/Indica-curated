@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="64" height="64" role="img" aria-label="Marlowe monogram">
+  <rect width="512" height="512" rx="96" fill="#1C1B18"/>
+  <path d="M136 372 V208 A44 44 0 0 1 224 208 V372" fill="none" stroke="#F4F1EA" stroke-width="26" stroke-linecap="round"/>
+  <path d="M288 372 V208 A44 44 0 0 1 376 208 V372" fill="none" stroke="#C4623F" stroke-width="26" stroke-linecap="round"/>
+  <path d="M136 372 H376" stroke="#F4F1EA" stroke-width="26" stroke-linecap="round"/>
+</svg>

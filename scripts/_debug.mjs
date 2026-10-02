@@ -1,0 +1,17 @@
+import { chromium } from "playwright";
+const BASE="http://127.0.0.1:3222";
+const b=await chromium.launch();
+const ctx=await b.newContext({viewport:{width:1440,height:900}});
+const p=await ctx.newPage();
+p.on("requestfailed",r=>console.log("FAILED:",r.url(),"->",r.failure()?.errorText));
+p.on("console",m=>{ if(m.type()==="error") console.log("CONSOLE ERROR:",m.text()); });
+console.log("=== home (desktop) ===");
+await p.goto(BASE+"/",{waitUntil:"networkidle"});
+console.log("=== mobile menu probe ===");
+await p.setViewportSize({width:390,height:844});
+await p.goto(BASE+"/",{waitUntil:"networkidle"});
+const btns=await p.evaluate(()=>[...document.querySelectorAll("button")].map(x=>x.textContent.trim()));
+console.log("buttons:",JSON.stringify(btns));
+console.log("mobile nav count:", await p.locator('nav[aria-label="Mobile"]').count());
+console.log("poster imgs:", await p.locator("img").count());
+await b.close();
